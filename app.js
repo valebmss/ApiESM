@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const port = 3000;
 const { Web3 } = require("web3");
 const contractInfo = require("./constants.json");
 
@@ -32,6 +33,7 @@ app.post("/transfer-native-token", async (req, res) => {
   };
   const txReceipt = await lucasNet.eth.sendTransaction(tx);
   console.log("Tx hash:", txReceipt.transactionHash);
+  console.log(txReceipt.transactionHash);
   res.send({
     message: "Ok",
     statusCode: 200,
@@ -60,6 +62,35 @@ app.post("/tranfer-diamond", async (req, res) => {
   });
 });
 
-
-// Exporta la aplicación para Vercel
-module.exports = app;
+app.post("/transfer", async (req, res) => {
+  const data = req.body;
+  const lucasNet = new Web3(rpc);
+  const account = lucasNet.eth.accounts.wallet.add(privateKey);
+  let diamonds = new lucasNet.eth.Contract(
+    contractInfo.abi,
+    contractInfo.address
+  );
+  const tx = {
+    from: account[0].address,
+    to: data.receiver,
+    value: data.emeralds,
+  };
+  //   const gasEmeralds = await lucasNet.eth.estimateGas(tx);
+  const txReceipt = await lucasNet.eth.sendTransaction(tx);
+  const transferDiamond = await diamonds.methods
+    .transfer(data.receiver, data.diamonds)
+    .send({
+      from: account[0].address,
+    });
+  //   const gasDiamond = await diamonds.methods
+  //     .transfer(data.receiver, data.diamonds)
+  //     .estimateGas();
+  res.send({
+    message: "Ok",
+    statusCode: 200,
+    txHashDiamond: transferDiamond.transactionHash,
+    txHashEmeralds: txReceipt.transactionHash,
+    // gasDiamond: Number(gasDiamond),
+    // gasEmeralds: Number(gasEmeralds),
+  });
+});
