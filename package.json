@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "hackathon-gaming-2024": "file:",
+    "serverless-http": "^3.2.0",
     "web3": "^4.12.1"
   },
   "devDependencies": {
