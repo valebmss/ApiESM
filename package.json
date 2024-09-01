@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "express": "^4.19.2",
+    "hackathon-gaming-2024": "file:",
     "web3": "^4.12.1"
   },
   "devDependencies": {

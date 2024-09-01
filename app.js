@@ -4,11 +4,12 @@ const port = 3000;
 const { Web3 } = require("web3");
 const contractInfo = require("./constants.json");
 
-const address = "0x2B8D583Ff6E54Db4ca0a15a04314eB6D8EaA16C6";
+const address = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC";
 const privateKey =
-  "0x2607097cacd162f23b4b5c7e7ef14e4063c229519ba03835030db9b45492d348";
+  "0x56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8027";
 const rpc =
-  "https://super-duper-space-xylophone-x59jvj9579543p96q-9650.app.github.dev/ext/bc/lucas/rpc";
+  "https://psychic-telegram-px57g75gg7536vvj-9650.app.github.dev/ext/bc/devChain/rpc";
+
 
 app.use(express.json());
 app.get("/", (req, res) => {
@@ -22,6 +23,7 @@ app.get("/contract-info", async (req, res) => {
   res.send({
     message: "Hola Bogotá...!",
     balanceLucas: Number(balanceLucas) / 10 ** 18,
+    
   });
 });
 
@@ -30,8 +32,8 @@ app.post("/transfer-native-token", async (req, res) => {
   const account = lucasNet.eth.accounts.wallet.add(privateKey);
   const tx = {
     from: account[0].address,
-    to: req.body.receiver,
-    value: lucasNet.utils.toWei(String(req.body.amount), "ether"),
+    to: req.body.pubKey,
+    value: lucasNet.utils.toWei(String(req.body.numESM), "ether"),
   };
   const txReceipt = await lucasNet.eth.sendTransaction(tx);
   console.log("Tx hash:", txReceipt.transactionHash);
