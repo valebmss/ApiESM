@@ -4,13 +4,23 @@ const port = 3000;
 const { Web3 } = require("web3");
 const contractInfo = require("./constants.json");
 
-const address = "0xb18B217e7af74646f18BCd2E4d70BB43F3485845";
+const address = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC";
 const privateKey =
   "0x56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8027";
 const rpc =
   "https://psychic-telegram-px57g75gg7536vvj-9650.app.github.dev/ext/bc/devChain/rpc";
 
+
 app.use(express.json());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+})
+
+
+
+
 app.get("/", (req, res) => {
   res.send("Hola Bogotá!");
 });
@@ -28,11 +38,13 @@ app.get("/contract-info", async (req, res) => {
 app.post("/transfer-native-token", async (req, res) => {
   const lucasNet = new Web3(rpc);
   const account = lucasNet.eth.accounts.wallet.add(privateKey);
+  console.log(req.body);
   const tx = {
     from: account[0].address,
-    to: req.body.receiver,
-    value: lucasNet.utils.toWei(String(req.body.amount), "ether"),
+    to: req.body.pubKey,
+    value: lucasNet.utils.toWei(String(req.body.numESM), "ether"),
   };
+  console.log(tx);
   const txReceipt = await lucasNet.eth.sendTransaction(tx);
   console.log("Tx hash:", txReceipt.transactionHash);
   console.log(txReceipt.transactionHash);

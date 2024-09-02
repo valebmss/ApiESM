@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "hackathon-gaming-2024": "file:",
     "serverless-http": "^3.2.0",
